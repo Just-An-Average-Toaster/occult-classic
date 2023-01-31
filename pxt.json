@@ -8,7 +8,8 @@
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
         "arcade-story": "github:microsoft/arcade-storytelling#v1.0.3",
         "arcade-text": "github:microsoft/arcade-text#v1.3.0",
-        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0"
+        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0",
+        "animation": "*"
     },
     "files": [
         "main.blocks",
@@ -24,7 +25,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.11.37",
+        "target": "1.12.18",
         "targetId": "arcade"
     },
     "supportedTargets": [

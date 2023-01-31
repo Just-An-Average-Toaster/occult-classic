@@ -5,25 +5,25 @@ function moveBattleMenuSelection (direction: number) {
     if (direction == 0) {
         if (selectedMenuButton == dodgeMenuButton) {
             selectedMenuButton = fightMenuButton
-        } else if (selectedMenuButton == runMenuButton) {
+        } else if (selectedMenuButton == itemsMenuButton) {
             selectedMenuButton = blockMenuButton
         }
     } else if (direction == 1) {
         if (selectedMenuButton == fightMenuButton) {
             selectedMenuButton = blockMenuButton
         } else if (selectedMenuButton == dodgeMenuButton) {
-            selectedMenuButton = runMenuButton
+            selectedMenuButton = itemsMenuButton
         }
     } else if (direction == 2) {
         if (selectedMenuButton == fightMenuButton) {
             selectedMenuButton = dodgeMenuButton
         } else if (selectedMenuButton == blockMenuButton) {
-            selectedMenuButton = runMenuButton
+            selectedMenuButton = itemsMenuButton
         }
     } else if (direction == 3) {
         if (selectedMenuButton == blockMenuButton) {
             selectedMenuButton = fightMenuButton
-        } else if (selectedMenuButton == runMenuButton) {
+        } else if (selectedMenuButton == itemsMenuButton) {
             selectedMenuButton = dodgeMenuButton
         }
     }
@@ -39,6 +39,17 @@ function createMenuButtonSprite (text: string) {
     newMenuButton.setBorder(0, 6, 1)
     return newMenuButton
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (selectedMenuButton == fightMenuButton) {
+        battleFight(Planeon, Carmon)
+    } else if (selectedMenuButton == blockMenuButton) {
+        battleBlock()
+    } else if (selectedMenuButton == dodgeMenuButton) {
+        battleDodge()
+    } else if (selectedMenuButton == itemsMenuButton) {
+        battleItems()
+    }
+})
 function showOrHideWeapmon (theWeapmon: Sprite, shouldHide: boolean) {
     theWeapmon.setFlag(SpriteFlag.Invisible, shouldHide)
     sprites.readDataSprite(theWeapmon, "label").setFlag(SpriteFlag.Invisible, shouldHide)
@@ -47,7 +58,10 @@ function showOrHideWeapmon (theWeapmon: Sprite, shouldHide: boolean) {
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     moveBattleMenuSelection(3)
 })
-function createWeapmon (portrait: Image, name: string, health: number) {
+function battleDodge () {
+	
+}
+function createWeapmon (portrait: Image, name: string, health: number, attack: number) {
     newWeapmon = sprites.create(portrait, SpriteKind.Weapmon)
     statusbar = statusbars.create(32, 4, StatusBarKind.Health)
     statusbar.attachToSprite(newWeapmon, 1, 0)
@@ -61,6 +75,7 @@ function createWeapmon (portrait: Image, name: string, health: number) {
     textSprite.left = newWeapmon.left - 9
     sprites.setDataSprite(newWeapmon, "label", textSprite)
     sprites.setDataString(newWeapmon, "name", name)
+    sprites.setDataNumber(newWeapmon, "attack", attack)
     return newWeapmon
 }
 function createBattleMenu () {
@@ -73,9 +88,9 @@ function createBattleMenu () {
     dodgeMenuButton = createMenuButtonSprite("DODGE")
     dodgeMenuButton.left = 10
     dodgeMenuButton.top = 90
-    runMenuButton = createMenuButtonSprite("RUN")
-    runMenuButton.left = 90
-    runMenuButton.top = 90
+    itemsMenuButton = createMenuButtonSprite("ITEMS")
+    itemsMenuButton.left = 90
+    itemsMenuButton.top = 90
     battleMenuIsOpen = true
     selectedMenuButton = fightMenuButton
     cursor = sprites.create(assets.image`Cursor`, SpriteKind.Player)
@@ -93,6 +108,9 @@ function moveWeapmon (theWeapmon: Sprite, x: number, y: number) {
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     moveBattleMenuSelection(2)
 })
+function battleBlock () {
+	
+}
 function startBattle (myWeapmon: Sprite, enemyWeapmon: Sprite) {
     showOrHideWeapmon(enemyWeapmon, false)
     story.printDialog("A Wild " + sprites.readDataString(enemyWeapmon, "name") + " Appears!", 80, 90, 50, 150)
@@ -100,6 +118,44 @@ function startBattle (myWeapmon: Sprite, enemyWeapmon: Sprite) {
     showOrHideWeapmon(myWeapmon, false)
     createBattleMenu()
 }
+function battleFight (weapmon: Sprite, enemy: Sprite) {
+    animationTimer = 800
+    animation.runMovementAnimation(
+    weapmon,
+    animation.animationPresets(animation.easeRight),
+    animationTimer,
+    false
+    )
+    pause(animationTimer)
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, enemy).value += -4
+    animation.runMovementAnimation(
+    weapmon,
+    animation.animationPresets(animation.easeLeft),
+    animationTimer,
+    false
+    )
+    pause(animationTimer)
+    animation.runMovementAnimation(
+    enemy,
+    animation.animationPresets(animation.easeLeft),
+    animationTimer,
+    false
+    )
+    pause(animationTimer)
+    scene.cameraShake(2, 200)
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, weapmon).value += -3
+    animation.runMovementAnimation(
+    enemy,
+    animation.animationPresets(animation.easeRight),
+    animationTimer,
+    false
+    )
+    pause(animationTimer)
+}
+function battleItems () {
+	
+}
+let animationTimer = 0
 let battleMenuIsOpen = false
 let textSprite: TextSprite = null
 let statusbar: StatusBarSprite = null
@@ -108,9 +164,11 @@ let newMenuButton: TextSprite = null
 let cursor: Sprite = null
 let blockMenuButton: TextSprite = null
 let fightMenuButton: TextSprite = null
-let runMenuButton: TextSprite = null
+let itemsMenuButton: TextSprite = null
 let dodgeMenuButton: TextSprite = null
 let selectedMenuButton: TextSprite = null
+let Carmon: Sprite = null
+let Planeon: Sprite = null
 scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -233,7 +291,7 @@ scene.setBackgroundImage(img`
     3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
     3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
     `)
-let Planeon = createWeapmon(img`
+Planeon = createWeapmon(img`
     ....ffffff.........ccc..
     ....ff22ccf.......cc4f..
     .....ffccccfff...cc44f..
@@ -250,9 +308,9 @@ let Planeon = createWeapmon(img`
     .........fcc2ffffffff...
     ..........fc2ffff.......
     ...........fffff........
-    `, "Planeon", 20)
+    `, "Planeon", 20, 1)
 moveWeapmon(Planeon, 30, 20)
-let Carmon = createWeapmon(img`
+Carmon = createWeapmon(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . 2 2 2 2 2 2 2 2 . . 
     . . . . . 2 c 2 2 2 2 2 2 4 2 . 
@@ -269,7 +327,7 @@ let Carmon = createWeapmon(img`
     . . . e f f f f f e e f f f f f 
     . . . . f f f f . . . . f f f . 
     . . . . . . . . . . . . . . . . 
-    `, "Carmon", 20)
+    `, "Carmon", 20, 1)
 moveWeapmon(Carmon, 130, 20)
 showOrHideWeapmon(Carmon, true)
 showOrHideWeapmon(Planeon, true)
