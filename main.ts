@@ -127,7 +127,7 @@ function battleFight (weapmon: Sprite, enemy: Sprite) {
     false
     )
     pause(animationTimer)
-    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, enemy).value += 0 - sprites.readDataNumber(weapmon, "attack")
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, enemy).value += -4
     animation.runMovementAnimation(
     weapmon,
     animation.animationPresets(animation.easeLeft),
@@ -143,7 +143,7 @@ function battleFight (weapmon: Sprite, enemy: Sprite) {
     )
     pause(animationTimer)
     scene.cameraShake(2, 200)
-    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, weapmon).value += 0 - sprites.readDataNumber(enemy, "attack")
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, weapmon).value += -3
     animation.runMovementAnimation(
     enemy,
     animation.animationPresets(animation.easeRight),
