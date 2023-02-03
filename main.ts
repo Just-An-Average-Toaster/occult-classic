@@ -175,9 +175,23 @@ function battleFight (weapmon: Sprite, enemy: Sprite) {
     )
     pause(animationTimer)
 }
+function BattleTime () {
+    scene.setBackgroundImage(assets.image`myImage`)
+    Tomothymon = createWeapmon(assets.image`myImage0`, "Tomothy", 20, 4)
+    moveWeapmon(Tomothymon, 30, 20)
+    Catmon = createWeapmon(assets.image`myImage1`, "Cat", 20, 3)
+    moveWeapmon(Catmon, 130, 20)
+    Bat = weaponType(assets.image`myImage0`, "Bat", 1, 4)
+    showOrHideWeapmon(Catmon, true)
+    showOrHideWeapmon(Tomothymon, true)
+    startBattle(Tomothymon, Catmon)
+}
 function battleItems () {
 	
 }
+let Bat: Sprite = null
+let Catmon: Sprite = null
+let Tomothymon: Sprite = null
 let animationTimer = 0
 let battleMenuIsOpen = false
 let otherWeapmon: Sprite = null
@@ -192,12 +206,6 @@ let fightMenuButton: TextSprite = null
 let itemsMenuButton: TextSprite = null
 let dodgeMenuButton: TextSprite = null
 let selectedMenuButton: TextSprite = null
-scene.setBackgroundImage(assets.image`myImage`)
-let Tomothymon = createWeapmon(assets.image`myImage0`, "Tomothy", 20, 4)
-moveWeapmon(Tomothymon, 30, 20)
-let Catmon = createWeapmon(assets.image`myImage1`, "Cat", 20, 3)
-moveWeapmon(Catmon, 130, 20)
-let Bat = weaponType(assets.image`myImage0`, "Bat", 1, 4)
-showOrHideWeapmon(Catmon, true)
-showOrHideWeapmon(Tomothymon, true)
-startBattle(Tomothymon, Catmon)
+tiles.setCurrentTilemap(tilemap`temp map`)
+let Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
+controller.moveSprite(Tomothy_Map)
