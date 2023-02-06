@@ -6,6 +6,9 @@ namespace StatusBarKind {
     export const Damage = StatusBarKind.create()
 }
 function moveBattleMenuSelection (direction: number) {
+    if (Inbattle == 1) {
+    	
+    }
     if (direction == 0) {
         if (selectedMenuButton == dodgeMenuButton) {
             selectedMenuButton = fightMenuButton
@@ -39,6 +42,11 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         moveBattleMenuSelection(0)
     }
 })
+function destroyAllKind (kind: number) {
+    for (let value of sprites.allOfKind(kind)) {
+        value.destroy()
+    }
+}
 function wildMoves () {
     animation.runMovementAnimation(
     otherWeapmon,
@@ -69,6 +77,7 @@ function checkBattleEnd () {
         battleMenuIsOpen = false
         showOrHideWeapmon(Tomothymon, true)
         showOrHideWeapmon(Catmon, true)
+        destroyAllKind(SpriteKind.Text)
         tiles.setCurrentTilemap(tilemap`temp map`)
         Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
         scene.cameraFollowSprite(Tomothy_Map)
@@ -93,10 +102,10 @@ function weaponType (portrait: Image, name: string, dmg: number, attack: number)
     return weapons2
 }
 function SpawnEnemies () {
-    for (let value of tiles.getTilesByType(assets.tile`myTile6`)) {
+    for (let value2 of tiles.getTilesByType(assets.tile`myTile6`)) {
         CatMap = sprites.create(assets.image`myImage1`, SpriteKind.Enemy)
-        tiles.placeOnTile(CatMap, value)
-        tiles.setTileAt(value, assets.tile`myTile0`)
+        tiles.placeOnTile(CatMap, value2)
+        tiles.setTileAt(value2, assets.tile`myTile0`)
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -252,7 +261,7 @@ function battleItems () {
     wildMoves()
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    for (let value2 of sprites.allOfKind(SpriteKind.Enemy)) {
+    for (let value22 of sprites.allOfKind(SpriteKind.Enemy)) {
         if (Tomothy_Map.x < CatMap.x) {
             Tomothy_Map.x += -5
             Warningmeter += 1
@@ -261,11 +270,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
             Warningmeter += 1
         }
         if (Angermeter == 0 && Warningmeter == 10) {
-            story.spriteSayText(value2, "Hey man! Quit bumping into me!", 12)
+            story.spriteSayText(value22, "Hey man! Quit bumping into me!", 12)
             Warningmeter = 0
             Angermeter = 1
         } else if (Angermeter == 1 && Warningmeter == 10) {
-            story.spriteSayText(value2, "Thats it! Bring it on!", 12)
+            story.spriteSayText(value22, "Thats it! Bring it on!", 12)
             BattleTime()
         }
     }
@@ -286,13 +295,13 @@ let newMenuButton: TextSprite = null
 let Tomothymon: Sprite = null
 let animationTimer = 0
 let otherWeapmon: Sprite = null
-let Inbattle = 0
 let cursor: Sprite = null
 let blockMenuButton: TextSprite = null
 let fightMenuButton: TextSprite = null
 let itemsMenuButton: TextSprite = null
 let dodgeMenuButton: TextSprite = null
 let selectedMenuButton: TextSprite = null
+let Inbattle = 0
 let Tomothy_Map: Sprite = null
 tiles.setCurrentTilemap(tilemap`temp map`)
 SpawnEnemies()
