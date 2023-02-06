@@ -1,7 +1,6 @@
 namespace SpriteKind {
     export const Weapmon = SpriteKind.create()
     export const weapons = SpriteKind.create()
-    export const Cursor = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const Damage = StatusBarKind.create()
@@ -79,13 +78,10 @@ function checkBattleEnd () {
         showOrHideWeapmon(Tomothymon, true)
         showOrHideWeapmon(Catmon, true)
         destroyAllKind(SpriteKind.Text)
-        destroyAllKind(SpriteKind.Cursor)
-        Inbattle = 0
         tiles.setCurrentTilemap(tilemap`temp map`)
+        Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
         scene.cameraFollowSprite(Tomothy_Map)
         controller.moveSprite(Tomothy_Map)
-        Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
-        statusbars.getStatusBarAttachedTo(StatusBarKind.Health, Catmon).value = 20
     }
 }
 function weaponType (portrait: Image, name: string, dmg: number, attack: number) {
@@ -168,7 +164,7 @@ function createBattleMenu () {
     itemsMenuButton.top = 90
     battleMenuIsOpen = true
     selectedMenuButton = fightMenuButton
-    cursor = sprites.create(assets.image`Cursor`, SpriteKind.Cursor)
+    cursor = sprites.create(assets.image`Cursor`, SpriteKind.Player)
     cursor.right = selectedMenuButton.left
     cursor.y = selectedMenuButton.y
 }
@@ -310,4 +306,5 @@ let Tomothy_Map: Sprite = null
 tiles.setCurrentTilemap(tilemap`temp map`)
 SpawnEnemies()
 Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
+controller.moveSprite(Tomothy_Map)
 scene.cameraFollowSprite(Tomothy_Map)
