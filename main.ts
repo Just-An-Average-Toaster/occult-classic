@@ -34,40 +34,70 @@ function moveBattleMenuSelection (direction: number) {
     cursor.right = selectedMenuButton.left
     cursor.y = selectedMenuButton.y
 }
-function Spawn_enemies () {
-    for (let value of tiles.getTilesByType(assets.tile`myTile6`)) {
-        CatMap = sprites.create(assets.image`myImage1`, SpriteKind.Enemy)
-        tiles.placeOnTile(CatMap, value)
-        tiles.setTileAt(value, assets.tile`myTile0`)
-    }
-}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Inbattle == 1) {
         moveBattleMenuSelection(0)
     }
 })
+function wildMoves () {
+    animation.runMovementAnimation(
+    otherWeapmon,
+    animation.animationPresets(animation.easeLeft),
+    animationTimer,
+    false
+    )
+    pause(animationTimer)
+    scene.cameraShake(2, 200)
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, Tomothymon).value += 0 - sprites.readDataNumber(otherWeapmon, "attack")
+    animation.runMovementAnimation(
+    otherWeapmon,
+    animation.animationPresets(animation.easeRight),
+    animationTimer,
+    false
+    )
+    pause(animationTimer)
+    checkBattleEnd()
+}
 function createMenuButtonSprite (text: string) {
     newMenuButton = textsprite.create(text, 12, 1)
     newMenuButton.setMaxFontHeight(8)
     newMenuButton.setBorder(0, 6, 1)
     return newMenuButton
 }
+function checkBattleEnd () {
+    if (statusbars.getStatusBarAttachedTo(StatusBarKind.Health, Catmon).value == 0) {
+        battleMenuIsOpen = false
+        showOrHideWeapmon(Tomothymon, true)
+        showOrHideWeapmon(Catmon, true)
+        tiles.setCurrentTilemap(tilemap`temp map`)
+        Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
+        scene.cameraFollowSprite(Tomothy_Map)
+        controller.moveSprite(Tomothy_Map)
+    }
+}
 function weaponType (portrait: Image, name: string, dmg: number, attack: number) {
-    weapons = sprites.create(portrait, SpriteKind.weapons)
+    weapons2 = sprites.create(portrait, SpriteKind.weapons)
     statusbar = statusbars.create(4 * attack, 4, StatusBarKind.Damage)
-    statusbar.attachToSprite(weapons, 1, 0)
+    statusbar.attachToSprite(weapons2, 1, 0)
     statusbar.positionDirection(CollisionDirection.Bottom)
     statusbar.setLabel("DMG", 12)
     statusbar.max = dmg
     statusbar.value = dmg
     textSprite = textsprite.create(name, 0, 12)
     textSprite.setMaxFontHeight(8)
-    textSprite.top = weapons.bottom + 8
-    textSprite.left = weapons.left - 9
-    sprites.setDataSprite(weapons, "label", textSprite)
-    sprites.setDataString(weapons, "name", name)
-    sprites.setDataNumber(weapons, "attack", attack)
-    return weapons
+    textSprite.top = weapons2.bottom + 8
+    textSprite.left = weapons2.left - 9
+    sprites.setDataSprite(weapons2, "label", textSprite)
+    sprites.setDataString(weapons2, "name", name)
+    sprites.setDataNumber(weapons2, "attack", attack)
+    return weapons2
+}
+function SpawnEnemies () {
+    for (let value of tiles.getTilesByType(assets.tile`myTile6`)) {
+        CatMap = sprites.create(assets.image`myImage1`, SpriteKind.Enemy)
+        tiles.placeOnTile(CatMap, value)
+        tiles.setTileAt(value, assets.tile`myTile0`)
+    }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (selectedMenuButton == fightMenuButton) {
@@ -94,21 +124,21 @@ function battleDodge () {
 	
 }
 function createWeapmon (portrait: Image, name: string, health: number, attack: number) {
-    weapons = sprites.create(portrait, SpriteKind.Weapmon)
+    weapons2 = sprites.create(portrait, SpriteKind.Weapmon)
     statusbar = statusbars.create(32, 4, StatusBarKind.Health)
-    statusbar.attachToSprite(weapons, 1, 0)
+    statusbar.attachToSprite(weapons2, 1, 0)
     statusbar.positionDirection(CollisionDirection.Bottom)
     statusbar.setLabel("HP", 12)
     statusbar.max = health
     statusbar.value = health
     textSprite = textsprite.create(name, 0, 12)
     textSprite.setMaxFontHeight(8)
-    textSprite.top = weapons.bottom + 8
-    textSprite.left = weapons.left - 9
-    sprites.setDataSprite(weapons, "label", textSprite)
-    sprites.setDataString(weapons, "name", name)
-    sprites.setDataNumber(weapons, "attack", attack)
-    return weapons
+    textSprite.top = weapons2.bottom + 8
+    textSprite.left = weapons2.left - 9
+    sprites.setDataSprite(weapons2, "label", textSprite)
+    sprites.setDataString(weapons2, "name", name)
+    sprites.setDataNumber(weapons2, "attack", attack)
+    return weapons2
 }
 function createBattleMenu () {
     fightMenuButton = createMenuButtonSprite("FIGHT")
@@ -136,8 +166,8 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function moveWeapmon (theWeapmon: Sprite, x: number, y: number) {
     theWeapmon.setPosition(x, y)
-    sprites.readDataSprite(theWeapmon, "label").top = weapons.bottom + 8
-    sprites.readDataSprite(theWeapmon, "label").left = weapons.left - 9
+    sprites.readDataSprite(theWeapmon, "label").top = weapons2.bottom + 8
+    sprites.readDataSprite(theWeapmon, "label").left = weapons2.left - 9
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Inbattle == 1) {
@@ -157,9 +187,8 @@ function startBattle (myWeapmon: Sprite, enemyWeapmon: Sprite) {
     createBattleMenu()
 }
 function battleFight (weapmon: Sprite, enemy: Sprite) {
-    animationTimer = 800
     animation.runMovementAnimation(
-    weapmon,
+    Tomothymon,
     animation.animationPresets(animation.easeRight),
     animationTimer,
     false
@@ -167,48 +196,63 @@ function battleFight (weapmon: Sprite, enemy: Sprite) {
     pause(animationTimer)
     statusbars.getStatusBarAttachedTo(StatusBarKind.Health, enemy).value += 0 - sprites.readDataNumber(weapmon, "attack")
     animation.runMovementAnimation(
-    weapmon,
+    Tomothymon,
     animation.animationPresets(animation.easeLeft),
     animationTimer,
     false
     )
     pause(animationTimer)
-    animation.runMovementAnimation(
-    enemy,
-    animation.animationPresets(animation.easeLeft),
-    animationTimer,
-    false
-    )
-    pause(animationTimer)
-    scene.cameraShake(2, 200)
-    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, weapmon).value += 0 - sprites.readDataNumber(enemy, "attack")
-    animation.runMovementAnimation(
-    enemy,
-    animation.animationPresets(animation.easeRight),
-    animationTimer,
-    false
-    )
-    pause(animationTimer)
+    wildMoves()
+}
+function changeWeap () {
+    showOrHideWeapmon(Bat, false)
+    pause(500)
+    currentWeapmon = weaponsList[(weaponsList.indexOf(currentWeapmon) + 1) % weaponsList.length]
+    showOrHideWeapmon(Bat, true)
 }
 function BattleTime () {
     scene.setBackgroundImage(assets.image`myImage`)
-    scene.centerCameraAt(0, 0)
-    tiles.setCurrentTilemap(tilemap`level6`)
+    animationTimer = 800
+    tomothyHP = 20
     Inbattle = 1
-    Tomothymon = createWeapmon(assets.image`myImage0`, "Tomothy", 20, 4)
+    Bat = createWeapmon(img`
+        . . 2 2 b b b b b . . . . . . . 
+        . 2 b 4 4 4 4 4 4 b . . . . . . 
+        2 2 4 4 4 4 d d 4 4 b . . . . . 
+        2 b 4 4 4 4 4 4 d 4 b . . . . . 
+        2 b 4 4 4 4 4 4 4 d 4 b . . . . 
+        2 b 4 4 4 4 4 4 4 4 4 b . . . . 
+        2 b 4 4 4 4 4 4 4 4 4 e . . . . 
+        2 2 b 4 4 4 4 4 4 4 b e . . . . 
+        . 2 b b b 4 4 4 b b b e . . . . 
+        . . e b b b b b b b e e . . . . 
+        . . . e e b 4 4 b e e e b . . . 
+        . . . . . e e e e e e b d b b . 
+        . . . . . . . . . . . b 1 1 1 b 
+        . . . . . . . . . . . c 1 d d b 
+        . . . . . . . . . . . c 1 b c . 
+        . . . . . . . . . . . . c c . . 
+        `, "Bat", tomothyHP, 6)
+    moveWeapmon(Bat, 80, 20)
+    Tomothymon = createWeapmon(assets.image`myImage0`, "Tomothy", tomothyHP, 4)
+    scene.centerCameraAt(0, 0)
+    tiles.setCurrentTilemap(tilemap`level3`)
+    Inbattle = 1
     moveWeapmon(Tomothymon, 30, 20)
     Catmon = createWeapmon(assets.image`myImage1`, "Cat", 20, 3)
     moveWeapmon(Catmon, 130, 20)
-    Bat = weaponType(assets.image`myImage0`, "Bat", 1, 4)
     showOrHideWeapmon(Catmon, true)
     showOrHideWeapmon(Tomothymon, true)
+    weaponsList = [Bat, Tomothymon]
+    showOrHideWeapmon(Bat, true)
     startBattle(Tomothymon, Catmon)
 }
 function battleItems () {
-	
+    changeWeap()
+    wildMoves()
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
+    for (let value2 of sprites.allOfKind(SpriteKind.Enemy)) {
         if (Tomothy_Map.x < CatMap.x) {
             Tomothy_Map.x += -5
             Warningmeter += 1
@@ -217,30 +261,32 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
             Warningmeter += 1
         }
         if (Angermeter == 0 && Warningmeter == 10) {
-            story.spriteSayText(value, "Hey man! Quit bumping into me!", 12)
+            story.spriteSayText(value2, "Hey man! Quit bumping into me!", 12)
             Warningmeter = 0
             Angermeter = 1
         } else if (Angermeter == 1 && Warningmeter == 10) {
-            story.spriteSayText(value, "Thats it! Bring it on!", 12)
+            story.spriteSayText(value2, "Thats it! Bring it on!", 12)
             BattleTime()
         }
     }
 })
 let Angermeter = 0
 let Warningmeter = 0
+let tomothyHP = 0
+let weaponsList: Sprite[] = []
 let Bat: Sprite = null
-let Catmon: Sprite = null
-let Tomothymon: Sprite = null
-let animationTimer = 0
-let battleMenuIsOpen = false
-let otherWeapmon: Sprite = null
 let currentWeapmon: Sprite = null
+let CatMap: Sprite = null
 let textSprite: TextSprite = null
 let statusbar: StatusBarSprite = null
-let weapons: Sprite = null
+let weapons2: Sprite = null
+let battleMenuIsOpen = false
+let Catmon: Sprite = null
 let newMenuButton: TextSprite = null
+let Tomothymon: Sprite = null
+let animationTimer = 0
+let otherWeapmon: Sprite = null
 let Inbattle = 0
-let CatMap: Sprite = null
 let cursor: Sprite = null
 let blockMenuButton: TextSprite = null
 let fightMenuButton: TextSprite = null
@@ -249,7 +295,7 @@ let dodgeMenuButton: TextSprite = null
 let selectedMenuButton: TextSprite = null
 let Tomothy_Map: Sprite = null
 tiles.setCurrentTilemap(tilemap`temp map`)
-Spawn_enemies()
+SpawnEnemies()
 Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
 controller.moveSprite(Tomothy_Map)
 scene.cameraFollowSprite(Tomothy_Map)

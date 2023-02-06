@@ -14,15 +14,15 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage0"
     },
-    "image4": {
-        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAQAQAAAAAAAKEbAAC7u7sRoRoRAauqEboR8a4bsBqruvH+/hoAG/uvG/7+GgChu6qv8f4BAKG6qq/x/gEAG/qvG/7+GrAau7rx/v4aq6oRuhHxrhq7u7sRoRoRAQAAAACxGgAAAAAAABABAAAAAAAAAAAAAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "myImage1"
-    },
     "image5": {
         "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage2"
+    },
+    "image4": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAQAQAAAAAAAKEbAAC7u7sRoRoRAauqEboR8a4bsBqruvH+/hoAG/uvG/7+GgChu6qv8f4BAKG6qq/x/gEAG/qvG/7+GrAau7rx/v4aq6oRuhHxrhq7u7sRoRoRAQAAAACxGgAAAAAAABABAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage1"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",

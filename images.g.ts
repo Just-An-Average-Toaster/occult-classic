@@ -164,25 +164,6 @@ ee77ee77e77ee77eee77e77eeee77e7e77e7777eee77ee77e77ee77eee77e77eeee77e7e77e7777e
 . . . f e d d f f e d e f . . . 
 . . . . f f f . . f f f . . . . 
 `;
-            case "image4":
-            case "myImage1":return img`
-. . . b b . . . . . . b b . . . 
-. . . b a b . . . . b a b . . . 
-. . . b a a b 1 1 b a a b . . . 
-. . . b a 1 1 a a 1 1 a b . . . 
-. . . b 1 b b b a a b 1 b . . . 
-. . . b 1 a f b b f b 1 b . . . 
-. . . 1 a a f a a f a a 1 . . . 
-. . . 1 b b a a a a b b 1 . . . 
-. . 1 1 1 1 b f f b 1 1 1 1 . . 
-. 1 a a 1 f 1 a a 1 f 1 a b 1 . 
-. 1 b a 1 e e 1 1 e e 1 a a 1 . 
-. . 1 1 f f f f f f f f 1 1 . . 
-. . . 1 e e e e e e e e 1 . . . 
-. . . 1 a f f f f f f a 1 . . . 
-. . . 1 b a a 1 1 a a a 1 . . . 
-. . . . 1 1 1 . . 1 1 1 . . . . 
-`;
             case "image5":
             case "myImage2":return img`
 . . . . . . . . . . . . . . . . 
@@ -201,6 +182,25 @@ ee77ee77e77ee77eee77e77eeee77e7e77e7777eee77ee77e77ee77eee77e77eeee77e7e77e7777e
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
+`;
+            case "image4":
+            case "myImage1":return img`
+. . . b b . . . . . . b b . . . 
+. . . b a b . . . . b a b . . . 
+. . . b a a b 1 1 b a a b . . . 
+. . . b a 1 1 a a 1 1 a b . . . 
+. . . b 1 b b b a a b 1 b . . . 
+. . . b 1 a f b b f b 1 b . . . 
+. . . 1 a a f a a f a a 1 . . . 
+. . . 1 b b a a a a b b 1 . . . 
+. . 1 1 1 1 b f f b 1 1 1 1 . . 
+. 1 a a 1 f 1 a a 1 f 1 a b 1 . 
+. 1 b a 1 e e 1 1 e e 1 a a 1 . 
+. . 1 1 f f f f f f f f 1 1 . . 
+. . . 1 e e e e e e e e 1 . . . 
+. . . 1 a f f f f f f a 1 . . . 
+. . . 1 b a a 1 1 a a a 1 . . . 
+. . . . 1 1 1 . . 1 1 1 . . . . 
 `;
         }
         return null;
