@@ -9,7 +9,8 @@
         "arcade-story": "github:microsoft/arcade-storytelling#v1.0.3",
         "arcade-text": "github:microsoft/arcade-text#v1.3.0",
         "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0",
-        "animation": "*"
+        "animation": "*",
+        "tilemaps": "github:microsoft/pxt-tilemaps#v1.12.0"
     },
     "files": [
         "main.blocks",
