@@ -310,5 +310,4 @@ let Tomothy_Map: Sprite = null
 tiles.setCurrentTilemap(tilemap`temp map`)
 SpawnEnemies()
 Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
-controller.moveSprite(Tomothy_Map)
 scene.cameraFollowSprite(Tomothy_Map)
