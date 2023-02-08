@@ -42,6 +42,9 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Inbattle == 1) {
         moveBattleMenuSelection(0)
     }
+    if (Inbattle == 0) {
+        spriteWalk(Tomothy_Map, 0)
+    }
 })
 function destroyAllKind (kind: number) {
     for (let value of sprites.allOfKind(kind)) {
@@ -72,6 +75,53 @@ function createMenuButtonSprite (text: string) {
     newMenuButton.setMaxFontHeight(8)
     newMenuButton.setBorder(0, 6, 1)
     return newMenuButton
+}
+function spriteWalk (sprite: Sprite, direction: number) {
+    if (sprites.readDataBoolean(sprite, "walking")) {
+        return
+    }
+    sprites.setDataBoolean(sprite, "walking", true)
+    walkAnimationTime = 200
+    if (direction == 0) {
+        if (!(tiles.tileIsWall(tiles.locationInDirection(tiles.locationOfSprite(sprite), CollisionDirection.Top)))) {
+            animation.runMovementAnimation(
+            sprite,
+            "l 0 -16",
+            walkAnimationTime,
+            false
+            )
+        }
+    } else if (direction == 1) {
+        if (!(tiles.tileIsWall(tiles.locationInDirection(tiles.locationOfSprite(sprite), CollisionDirection.Right)))) {
+            animation.runMovementAnimation(
+            sprite,
+            "l 16 0",
+            walkAnimationTime,
+            false
+            )
+        }
+    } else if (direction == 2) {
+        if (!(tiles.tileIsWall(tiles.locationInDirection(tiles.locationOfSprite(sprite), CollisionDirection.Bottom)))) {
+            animation.runMovementAnimation(
+            sprite,
+            "l 0 16",
+            walkAnimationTime,
+            false
+            )
+        }
+    } else if (direction == 3) {
+        if (!(tiles.tileIsWall(tiles.locationInDirection(tiles.locationOfSprite(sprite), CollisionDirection.Left)))) {
+            animation.runMovementAnimation(
+            sprite,
+            "l -16 0",
+            walkAnimationTime,
+            false
+            )
+        }
+    }
+    pause(walkAnimationTime)
+    tiles.placeOnTile(sprite, tiles.locationOfSprite(sprite))
+    sprites.setDataBoolean(sprite, "walking", false)
 }
 function checkBattleEnd () {
     if (statusbars.getStatusBarAttachedTo(StatusBarKind.Health, Catmon).value == 0) {
@@ -130,6 +180,9 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Inbattle == 1) {
         moveBattleMenuSelection(3)
     }
+    if (Inbattle == 0) {
+        spriteWalk(Tomothy_Map, 3)
+    }
 })
 function battleDodge () {
 	
@@ -174,6 +227,9 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Inbattle == 1) {
         moveBattleMenuSelection(1)
     }
+    if (Inbattle == 0) {
+        spriteWalk(Tomothy_Map, 1)
+    }
 })
 function moveWeapmon (theWeapmon: Sprite, x: number, y: number) {
     theWeapmon.setPosition(x, y)
@@ -183,6 +239,9 @@ function moveWeapmon (theWeapmon: Sprite, x: number, y: number) {
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Inbattle == 1) {
         moveBattleMenuSelection(2)
+    }
+    if (Inbattle == 0) {
+        spriteWalk(Tomothy_Map, 2)
     }
 })
 function battleBlock () {
@@ -293,6 +352,7 @@ let statusbar: StatusBarSprite = null
 let weapons2: Sprite = null
 let battleMenuIsOpen = false
 let Catmon: Sprite = null
+let walkAnimationTime = 0
 let newMenuButton: TextSprite = null
 let Tomothymon: Sprite = null
 let animationTimer = 0
@@ -305,8 +365,8 @@ let dodgeMenuButton: TextSprite = null
 let selectedMenuButton: TextSprite = null
 let Inbattle = 0
 let Tomothy_Map: Sprite = null
+let encounter = null
 tiles.setCurrentTilemap(tilemap`temp map`)
 SpawnEnemies()
 Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
-controller.moveSprite(Tomothy_Map)
 scene.cameraFollowSprite(Tomothy_Map)
