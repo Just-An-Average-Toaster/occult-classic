@@ -126,12 +126,12 @@ function spriteWalk (sprite: Sprite, direction: number) {
 function checkBattleEnd () {
     if (statusbars.getStatusBarAttachedTo(StatusBarKind.Health, Catmon).value == 0) {
         battleMenuIsOpen = false
+        Inbattle = 0
         showOrHideWeapmon(Tomothymon, true)
         showOrHideWeapmon(Catmon, true)
         destroyAllKind(SpriteKind.Text)
         destroyAllKind(SpriteKind.Cursor)
         tiles.setCurrentTilemap(tilemap`temp map`)
-        Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
         scene.cameraFollowSprite(Tomothy_Map)
     }
 }
@@ -271,7 +271,10 @@ function battleFight (weapmon: Sprite, enemy: Sprite) {
     false
     )
     pause(animationTimer)
-    wildMoves()
+    checkBattleEnd()
+    if (Inbattle == 1) {
+        wildMoves()
+    }
 }
 function changeWeap () {
     showOrHideWeapmon(Bat, false)
