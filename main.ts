@@ -133,7 +133,6 @@ function checkBattleEnd () {
         tiles.setCurrentTilemap(tilemap`temp map`)
         Tomothy_Map = sprites.create(assets.image`myImage0`, SpriteKind.Player)
         scene.cameraFollowSprite(Tomothy_Map)
-        controller.moveSprite(Tomothy_Map)
     }
 }
 function weaponType (portrait: Image, name: string, dmg: number, attack: number) {
