@@ -43,7 +43,6 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         moveBattleMenuSelection(0)
     }
     if (Inbattle == 0) {
-        previous_location()
         spriteWalk(Tomothy_Map, 0)
     }
 })
@@ -181,7 +180,6 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         moveBattleMenuSelection(3)
     }
     if (Inbattle == 0) {
-        previous_location()
         spriteWalk(Tomothy_Map, 3)
     }
 })
@@ -229,7 +227,6 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         moveBattleMenuSelection(1)
     }
     if (Inbattle == 0) {
-        previous_location()
         spriteWalk(Tomothy_Map, 1)
     }
 })
@@ -243,15 +240,11 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         moveBattleMenuSelection(2)
     }
     if (Inbattle == 0) {
-        previous_location()
         spriteWalk(Tomothy_Map, 2)
     }
 })
 function battleBlock () {
 	
-}
-function previous_location () {
-    PLocation = tiles.locationOfSprite(Tomothy_Map)
 }
 function startBattle (myWeapmon: Sprite, enemyWeapmon: Sprite) {
     currentWeapmon = myWeapmon
@@ -329,32 +322,18 @@ function battleItems () {
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     for (let value22 of sprites.allOfKind(SpriteKind.Enemy)) {
-        if (PLocation.x < CatMap.x) {
-            timer.after(100, function () {
-                spriteWalk(Tomothy_Map, 3)
-                Warningmeter += 1
-            })
-        } else if (PLocation.x > CatMap.x) {
-            timer.after(100, function () {
-                spriteWalk(Tomothy_Map, 1)
-                Warningmeter += 1
-            })
-        } else if (PLocation.y > CatMap.y) {
-            timer.after(100, function () {
-                spriteWalk(Tomothy_Map, 2)
-                Warningmeter += 1
-            })
-        } else if (PLocation.y < CatMap.y) {
-            timer.after(100, function () {
-                spriteWalk(Tomothy_Map, 0)
-                Warningmeter += 1
-            })
+        if (Tomothy_Map.x < CatMap.x) {
+            Tomothy_Map.x += -5
+            Warningmeter += 1
+        } else if (Tomothy_Map.x > CatMap.x) {
+            Tomothy_Map.x += 5
+            Warningmeter += 1
         }
-        if (Angermeter == 0 && Warningmeter == 1) {
+        if (Angermeter == 0 && Warningmeter == 10) {
             story.spriteSayText(value22, "Hey man! Quit bumping into me!", 12)
             Warningmeter = 0
             Angermeter = 1
-        } else if (Angermeter == 1 && Warningmeter == 1) {
+        } else if (Angermeter == 1 && Warningmeter == 10) {
             story.spriteSayText(value22, "Thats it! Bring it on!", 12)
             BattleTime()
         }
@@ -365,7 +344,6 @@ let Warningmeter = 0
 let tomothyHP = 0
 let weaponsList: Sprite[] = []
 let Bat: Sprite = null
-let PLocation: tiles.Location = null
 let currentWeapmon: Sprite = null
 let CatMap: Sprite = null
 let textSprite: TextSprite = null
